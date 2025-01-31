@@ -16,55 +16,52 @@ class _BuildSliderState extends State<BuildSlider> {
   final CarouselSliderController controller = CarouselSliderController();
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey.shade200,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          CarouselSlider(
-            items: slides.map((i) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.grey.shade300,
-                    ),
-                    child: Image.network(
-                      i,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                },
-              );
-            }).toList(),
-            carouselController: controller,
-            options: CarouselOptions(
-              autoPlay: true,
-              autoPlayCurve: Curves.easeInQuad,
-              enlargeCenterPage: true,
-              aspectRatio: 2,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  currentIndex = index;
-                });
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        CarouselSlider(
+          items: slides.map((i) {
+            return Builder(
+              builder: (BuildContext context) {
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.grey.shade300,
+                  ),
+                  child: Image.network(
+                    i,
+                    fit: BoxFit.cover,
+                  ),
+                );
               },
-            ),
+            );
+          }).toList(),
+          carouselController: controller,
+          options: CarouselOptions(
+            autoPlay: true,
+            autoPlayCurve: Curves.easeInQuad,
+            enlargeCenterPage: true,
+            aspectRatio: 2,
+            onPageChanged: (index, reason) {
+              setState(() {
+                currentIndex = index;
+              });
+            },
           ),
-          SizedBox(height: 10),
-          AnimatedSmoothIndicator(
-            activeIndex: currentIndex,
-            count: slides.length,
-            effect: ExpandingDotsEffect(
-              dotColor: Colors.grey[300]!,
-              dotHeight: 10,
-              dotWidth: 10,
-            ),
+        ),
+        SizedBox(height: 10),
+        AnimatedSmoothIndicator(
+          activeIndex: currentIndex,
+          count: slides.length,
+          effect: ExpandingDotsEffect(
+            dotColor: Colors.grey[300]!,
+            dotHeight: 10,
+            dotWidth: 10,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
