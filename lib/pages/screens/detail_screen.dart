@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fetch_api/model/product_res_model.dart';
 
@@ -45,10 +46,16 @@ class _DetailScreenState extends State<DetailScreen> {
             Center(
               child: Hero(
                 tag: product.image,
-                child: Image.network(
-                  product.image,
-                  width: double.infinity,
-                  height: 400,
+                child: CachedNetworkImage(
+                  imageUrl: product.image,
+                  fit: BoxFit.cover,
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      CircularProgressIndicator(
+                    value: downloadProgress.progress,
+                  ),
+                  errorWidget: (context, url, error) => Icon(
+                    Icons.error,
+                  ),
                 ),
               ),
             ),

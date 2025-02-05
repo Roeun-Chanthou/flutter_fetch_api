@@ -45,4 +45,22 @@ class APIHelper {
       ];
     }
   }
+
+  static Future<List<ProductDb>> getProductByCategory(
+      String categoriName, BuildContext context) async {
+    String url = "https://fakestoreapi.com/products/category/$categoriName";
+
+    try {
+      var response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body);
+        var prodcutData = data.map((e) => ProductDb.fromJson(e)).toList();
+        return prodcutData;
+      } else {
+        throw Exception("Error Code: ${response.statusCode}");
+      }
+    } catch (e) {
+      return [];
+    }
+  }
 }

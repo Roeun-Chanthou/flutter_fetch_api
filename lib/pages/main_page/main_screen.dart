@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fetch_api/pages/cart/cart_screen.dart';
 import 'package:flutter_fetch_api/pages/favorite_page/favorite_screen.dart';
-import 'package:flutter_fetch_api/pages/home_page/home_screen.dart';
+import 'package:flutter_fetch_api/pages/screens/home_screen.dart';
 import 'package:flutter_fetch_api/pages/profile_page/profile_screen.dart';
 import 'package:flutter_svg/svg.dart';
 

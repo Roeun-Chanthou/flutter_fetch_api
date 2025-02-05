@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fetch_api/model/product_res_model.dart';
+import 'package:flutter_fetch_api/pages/screens/category_screen.dart';
+import 'package:flutter_fetch_api/pages/screens/search_screen.dart';
 import 'package:flutter_fetch_api/services/api_helper.dart';
 import 'package:flutter_fetch_api/widgets/product_show.dart';
 import 'package:flutter_fetch_api/widgets/slider.dart';
@@ -25,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: FutureBuilder<List<dynamic>>(
         future: Future.wait([_fetchCategories, _fetchProduct]),
         builder: (context, snapshot) {
@@ -49,6 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: CustomScrollView(
         slivers: [
+          const SliverAppBar(
+            backgroundColor: Colors.white,
+            title: Text("Product"),
+          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -56,12 +63,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Expanded(
                     child: TextField(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SearchScreenProduct(),
+                          ),
+                        );
+                      },
                       decoration: InputDecoration(
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 16),
                         hintText: 'Search Product',
                         filled: true,
-                        fillColor: Colors.grey.shade200,
+                        prefixIcon: Icon(Icons.search),
+                        fillColor: Colors.grey.shade300,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none,
@@ -76,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 45,
                       margin: const EdgeInsets.only(left: 10),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade400,
+                        color: Colors.grey.shade300,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Icon(Icons.filter_list, size: 30),
@@ -86,9 +102,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 16)),
-          _buildCategorySection(categories), // Add category section
-          const SliverToBoxAdapter(child: BuildSlider()),
+          const SliverToBoxAdapter(child: SizedBox(height: 25)),
+          const SliverToBoxAdapter(
+            child: BuildSlider(),
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 20)),
+          _buildCategorySection(categories),
           SliverPadding(
             padding: const EdgeInsets.all(16.0),
             sliver: SliverGrid(
@@ -102,8 +121,8 @@ class _HomeScreenState extends State<HomeScreen> {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 0.7,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
               ),
             ),
           ),
@@ -117,11 +136,13 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Categories",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: const Text(
+              "Categories",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
           ),
-          const SizedBox(height: 10),
           SizedBox(
             height: 80,
             child: ListView.builder(
@@ -129,22 +150,34 @@ class _HomeScreenState extends State<HomeScreen> {
               scrollDirection: Axis.horizontal,
               itemCount: categories.length,
               itemBuilder: (context, index) {
-                return Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  margin: const EdgeInsets.only(right: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.amber.shade300,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.category, size: 18),
-                      const SizedBox(width: 5),
-                      Text(categories[index]),
-                    ],
+                String categoryName = categories[index];
+                return GestureDetector(
+                  onTap: () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CategoryScreen(
+                          categoryName: categoryName,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                    margin: const EdgeInsets.only(right: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      categories[index],
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 );
               },
